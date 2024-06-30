@@ -1,0 +1,87 @@
+package com.devpaik.nfs.notification.exceptions;
+
+import jakarta.persistence.PersistenceException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.TypeMismatchException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@Slf4j
+@RestControllerAdvice
+public class NotificationExceptionHandler {
+    /**
+     * System Exception
+     */
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity<ErrorResponse> handleException(Exception e) {
+        log.error("handleException Occurred: ", e);
+        return ErrorResponse.of(ServiceCode.SERVER_ERROR);
+    }
+
+    /**
+     * db Exception
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value = PersistenceException.class)
+    public ResponseEntity<ErrorResponse> handlePersistenceException(PersistenceException e) {
+        log.error("handlePersistenceException Occurred: ", e);
+
+        return ErrorResponse.of(ServiceCode.SERVER_ERROR);
+    }
+
+    /**
+     * filed type null exception
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(TypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleTypeMismatchException(TypeMismatchException e) {
+        log.error("handleTypeMismatchException :", e);
+
+        Object obj = "null";
+        String val = "null";
+        if (e.getValue() != null) {
+            obj = e.getValue().getClass().getTypeName();
+            val = e.getValue().toString();
+        }
+
+        String desc = "Invalid " + e.getErrorCode() + " : [RequiredType=" + e.getRequiredType() + ", TypeName=" + obj + ", Value=" + val + "]";
+        return ErrorResponse.of(ServiceCode.BAD_REQUEST, desc);
+    }
+
+    /**
+     * Valid argumentException
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<ErrorResponse> handleBindException(BindException e) {
+        BindingResult bindingResult = e.getBindingResult();
+
+        String result = getBindingResult(bindingResult);
+        log.error("handleBindException [{}]", result, e);
+
+        return ErrorResponse.of(ServiceCode.BAD_REQUEST, bindingResult);
+    }
+
+    private String getBindingResult(BindingResult bindingResult) {
+        StringBuilder builder = new StringBuilder();
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            builder.append(fieldError.getField());
+            builder.append(" : ");
+            builder.append(fieldError.getDefaultMessage());
+            builder.append("[");
+            builder.append(fieldError.getRejectedValue());
+            builder.append("], ");
+        }
+        return builder.toString();
+    }
+}
