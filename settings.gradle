@@ -1,0 +1,6 @@
+rootProject.name = 'notification-server'
+
+include 'notification-front-server'
+include 'notification-sender-server'
+
+

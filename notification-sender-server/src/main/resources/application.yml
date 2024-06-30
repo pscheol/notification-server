@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: notification-sender-server
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+
+server:
+  port: 8090
+
+
+logging:
+  level:
+    com.devpaik.nss: DEBUG
