@@ -5,6 +5,7 @@ import com.devpaik.nss.adapter.out.infra.mail.SendMailPort;
 import com.devpaik.nss.application.event.EventPublisher;
 import com.devpaik.nss.application.event.SendEmailEvent;
 import com.devpaik.nss.application.event.SendResultEvent;
+import com.devpaik.nss.dto.EmailMessage;
 import com.devpaik.nss.simulation.NotificationSender;
 import com.devpaik.nss.simulation.ResponseTypeSelector;
 import com.devpaik.nss.simulation.ResultType;
@@ -33,10 +34,20 @@ public class SendEmailEventHandler {
         log.debug("# sendEmailEventHandler={}", sendEmailEvent);
 
         //test simulation code
-        final ResponseTypeSelector selector = new ResponseTypeSelector();
-        String result = sendResponse(selector);
-
+//        final ResponseTypeSelector selector = new ResponseTypeSelector();
+//        String result = sendResponse(selector);
+        String result = sendEmail(sendEmailEvent.message());
         eventPublisher.publishEvent(new SendResultEvent(sendEmailEvent.message().eventId(), result));
+    }
+
+    private String sendEmail(EmailMessage emailMessage) {
+        String result = "";
+        try {
+            result = sendMailPort.sendMail(emailMessage);
+        } catch (SMTPTransporterException e) {
+            result = SendResponse.FAIL;
+        }
+        return result;
     }
 
     private String sendResponse(ResponseTypeSelector selector) {

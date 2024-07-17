@@ -1,3 +1,6 @@
+server:
+  port: 8090
+
 spring:
   application:
     name: notification-sender-server
@@ -6,11 +9,28 @@ spring:
     port: 5672
     username: admin
     password: admin
+  mail:
+    host: smtp.gmail.com
+    port: 465
+    username: useremail
+    password: userpassword
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+            trust: smtp.gmail.com
+            protocols: TLSv1.2
+          starttls:
+            enable: true
+          auth: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 3000
 
-server:
-  port: 8090
 
 
 logging:
   level:
     com.devpaik.nss: DEBUG
+
