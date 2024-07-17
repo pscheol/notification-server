@@ -1,8 +1,8 @@
 package com.devpaik.nss.consumer;
 
 import com.devpaik.nss.dto.MessageMapper;
-import com.devpaik.nss.event.EventPublisher;
-import com.devpaik.nss.event.SendEmailEvent;
+import com.devpaik.nss.application.event.EventPublisher;
+import com.devpaik.nss.application.event.SendEmailEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;

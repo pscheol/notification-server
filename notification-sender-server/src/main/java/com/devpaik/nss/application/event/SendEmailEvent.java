@@ -1,4 +1,4 @@
-package com.devpaik.nss.event;
+package com.devpaik.nss.application.event;
 
 import com.devpaik.nss.dto.EmailMessage;
 

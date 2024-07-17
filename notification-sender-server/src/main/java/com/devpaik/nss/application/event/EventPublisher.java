@@ -1,4 +1,4 @@
-package com.devpaik.nss.event;
+package com.devpaik.nss.application.event;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;

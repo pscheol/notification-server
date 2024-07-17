@@ -1,4 +1,4 @@
-package com.devpaik.nss.producer;
+package com.devpaik.nss.adapter.out.producer;
 
 import com.devpaik.nss.dto.MessageMapper;
 import com.devpaik.nss.dto.ResultMessage;
