@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 public class SMTPTransporter implements SendMailPort {
 
 	private final JavaMailSender mailSender;
-	private static final int EXPIRE_IN_SECONDS = 100000;
 
 	@Override
 	public String sendMail(EmailMessage message) {
